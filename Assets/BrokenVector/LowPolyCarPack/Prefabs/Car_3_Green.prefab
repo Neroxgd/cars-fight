@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 455904}
   - component: {fileID: 3336518}
   - component: {fileID: 2375328}
+  - component: {fileID: 1049277718757940037}
+  - component: {fileID: 735594370277561597}
+  - component: {fileID: 3069878421870904984}
   m_Layer: 0
   m_Name: Car_3_Green
   m_TagString: Untagged
@@ -89,6 +92,97 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &1049277718757940037
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129146}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!65 &735594370277561597
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129146}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.045498952, y: 0.01358262, z: 0.021373872}
+  m_Center: {x: -0.000103079714, y: 0.0009655473, z: 4.656613e-10}
+--- !u!114 &3069878421870904984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b184a2c53f31cdf478413adbcbed4190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedCar: 612
+  _inputeAction:
+    m_Name: Inpute
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bb418f60-8631-47c8-b3ad-45ed45105d34
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: 19a502ee-d083-4234-9926-921a7b3f7fc0
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Inpute
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 133d6341-77ec-4552-ae28-8207e665b9a5
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Inpute
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 49ec4821-ccfa-4941-a2eb-3e2ca7ac3224
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Inpute
+      m_Flags: 8
+    - m_Name: left
+      m_Id: df8ecd89-9370-44c8-885f-e7f03fcda311
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Inpute
+      m_Flags: 8
+    - m_Name: right
+      m_Id: dde275bd-f6c8-4a31-8bc3-e04b6b2096b0
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Inpute
+      m_Flags: 8
+    m_Flags: 0
 --- !u!1 &145462
 GameObject:
   m_ObjectHideFlags: 0
