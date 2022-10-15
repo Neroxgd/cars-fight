@@ -40,7 +40,7 @@ public class Car_input : MonoBehaviour
         _FL.steerAngle = currentTurnAngle;
         _FR.steerAngle = currentTurnAngle;
 
-        //increase the puissance
+        //increase the power
         if (Keyboard.current.wKey.isPressed)
         {
             puissance += speedCar;
@@ -54,12 +54,12 @@ public class Car_input : MonoBehaviour
         else
         {
             inHold = false;
-            addForce();
+            addInstantForce();
         }
     }
 
     //apply the instante force
-    public void addForce()
+    public void addInstantForce()
     {
         _rigidebody.AddForce(transform.forward * puissance, ForceMode.Impulse);
         puissance = 0;

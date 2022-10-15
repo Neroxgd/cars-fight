@@ -9,7 +9,7 @@ public class Car_ragdoll_active : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        //disabled freez rotation on parent
+        //disabled freeze rotation on parent
         _rbParent.constraints = RigidbodyConstraints.None;
     }
     void Awake()
