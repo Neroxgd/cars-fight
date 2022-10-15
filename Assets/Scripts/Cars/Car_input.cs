@@ -7,18 +7,15 @@ public class Car_input : MonoBehaviour
 {
     private Rigidbody _rigidebody;
     [SerializeField][Range(10, 10000)] private int speedCar = 1000;
-    [SerializeField][Range(1, 5)] private int speed_rotate = 5;
     [SerializeField] private InputAction _inputedirection;
     [SerializeField] private WheelCollider _FR;
     [SerializeField] private WheelCollider _FL;
-    [SerializeField] private WheelCollider _BR;
-    [SerializeField] private WheelCollider _BL;
     [SerializeField] private float maxTurnAngle = 45f;
     private float currentTurnAngle = 0;
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0;
-    [SerializeField] private int puissance = 0;
+    private int puissance = 0;
     private bool inHold = false;
     void Start()
     {
