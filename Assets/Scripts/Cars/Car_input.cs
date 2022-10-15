@@ -56,6 +56,8 @@ public class Car_input : MonoBehaviour
             inHold = false;
             addInstantForce();
         }
+        SlowDownCar();
+        Debug.Log(_rigidebody.velocity);
     }
 
     //apply the instante force
@@ -63,5 +65,18 @@ public class Car_input : MonoBehaviour
     {
         _rigidebody.AddForce(transform.forward * puissance, ForceMode.Impulse);
         puissance = 0;
+    }
+
+    //slow down the car
+    public void SlowDownCar()
+    {
+        if (_rigidebody.velocity.x > 0)
+            _rigidebody.velocity -= new Vector3(0.05f, 0, 0);
+        else if (_rigidebody.velocity.x < 0)
+            _rigidebody.velocity += new Vector3(0.05f, 0, 0);
+        if (_rigidebody.velocity.z > 0)
+            _rigidebody.velocity -= new Vector3(0, 0, 0.05f);
+        else if (_rigidebody.velocity.z < 0)
+            _rigidebody.velocity += new Vector3(0, 0, 0.05f);
     }
 }
