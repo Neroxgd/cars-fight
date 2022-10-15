@@ -10,18 +10,19 @@ public class Car_input : MonoBehaviour
     [SerializeField] private InputAction _inputedirection;
     [SerializeField] private WheelCollider _FR;
     [SerializeField] private WheelCollider _FL;
-    [SerializeField] private float maxTurnAngle = 45f;
-    private float currentTurnAngle = 0;
+    [SerializeField] private float maxTurnAngle = 70f;
+    [SerializeField] private float currentTurnAngle = 0;
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0;
     private int puissance = 0;
     private bool inHold = false;
+    [SerializeField] private float currentAngle = 0.5f;
     void Start()
     {
         _rigidebody = GetComponent<Rigidbody>();
         //debug the collision when you spawn
-        _rigidebody.AddForce(transform.forward*5000, ForceMode.Impulse);
+        _rigidebody.AddForce(transform.forward * 5000, ForceMode.Impulse);
     }
 
     void Update()
@@ -32,8 +33,20 @@ public class Car_input : MonoBehaviour
 
     void FixedUpdate()
     {
-        //turn the car
-        currentTurnAngle = maxTurnAngle * _rotation;
+        //turn the wheels
+        currentTurnAngle = Mathf.Lerp(maxTurnAngle, -maxTurnAngle, currentAngle);
+        if (Keyboard.current.aKey.isPressed || Keyboard.current.dKey.isPressed)
+            currentAngle = Mathf.Clamp(currentAngle, 0, 1) + (-_rotation / 50);
+        else 
+        {
+            if (currentAngle >= 0.6f)
+                currentAngle-= 0.04f;
+            else if (currentAngle <= 0.4f)
+                currentAngle += 0.04f;
+            else 
+                currentAngle = 0.5f;
+        }
+            
         _FL.steerAngle = currentTurnAngle;
         _FR.steerAngle = currentTurnAngle;
 
@@ -45,7 +58,7 @@ public class Car_input : MonoBehaviour
         }
         else if (Keyboard.current.sKey.isPressed)
         {
-            puissance-= speedCar;
+            puissance -= speedCar;
             inHold = true;
         }
         else

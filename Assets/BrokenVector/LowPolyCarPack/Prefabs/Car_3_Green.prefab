@@ -103,8 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b184a2c53f31cdf478413adbcbed4190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedCar: 2000
-  speed_rotate: 1
+  speedCar: 5000
   _inputedirection:
     m_Name: Inputedirection
     m_Type: 0
@@ -140,10 +139,9 @@ MonoBehaviour:
     m_Flags: 0
   _FR: {fileID: 3641135656024615201}
   _FL: {fileID: 2513915385720051630}
-  _BR: {fileID: 9000113433793460538}
-  _BL: {fileID: 4694577348238261380}
-  maxTurnAngle: 45
-  puissance: 0
+  maxTurnAngle: 70
+  currentTurnAngle: 0
+  currentAngle: 0.5
 --- !u!54 &4646507650770407008
 Rigidbody:
   m_ObjectHideFlags: 0
