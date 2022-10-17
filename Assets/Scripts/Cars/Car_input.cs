@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class Car_input : MonoBehaviour
 {
     private Rigidbody _rigidebody;
-    [SerializeField][Range(10, 10000)] private int speedCar = 1000;
+    [SerializeField][Range(1, 100)] private int speedCar = 1000;
     [SerializeField] private InputAction _inputedirection;
     [SerializeField] private WheelCollider _FR;
     [SerializeField] private WheelCollider _FL;
@@ -15,9 +15,11 @@ public class Car_input : MonoBehaviour
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0;
-    private int puissance = 0;
+    [SerializeField] private int puissance = 0;
     private bool inHold = false;
+    private bool playturn = false;
     [SerializeField] private float currentAngle = 0.5f;
+    [SerializeField] private float _SlowDownCar = 0.1f;
     void Start()
     {
         _rigidebody = GetComponent<Rigidbody>();
@@ -37,35 +39,41 @@ public class Car_input : MonoBehaviour
         currentTurnAngle = Mathf.Lerp(maxTurnAngle, -maxTurnAngle, currentAngle);
         if (Keyboard.current.aKey.isPressed || Keyboard.current.dKey.isPressed)
             currentAngle = Mathf.Clamp(currentAngle, 0, 1) + (-_rotation / 50);
-        else 
+        else
         {
             if (currentAngle >= 0.6f)
-                currentAngle-= 0.04f;
+                currentAngle -= 0.04f;
             else if (currentAngle <= 0.4f)
                 currentAngle += 0.04f;
-            else 
+            else
                 currentAngle = 0.5f;
         }
-            
+
         _FL.steerAngle = currentTurnAngle;
         _FR.steerAngle = currentTurnAngle;
 
         //increase the power
-        if (Keyboard.current.wKey.isPressed)
+        if (Keyboard.current.wKey.isPressed && !playturn)
         {
             puissance += speedCar;
             inHold = true;
         }
-        else if (Keyboard.current.sKey.isPressed)
+        else if (Keyboard.current.sKey.isPressed && !playturn)
         {
             puissance -= speedCar;
             inHold = true;
         }
-        else
+        else if (inHold && !playturn)
         {
-            inHold = false;
             addInstantForce();
+            inHold = false;
+            StartCoroutine(timePlayturn());
         }
+        // Vector3 velocitysave = _rigidebody.velocity;
+        // _rigidebody.velocity = Vector3.zero;
+        // _rigidebody.AddForce(velocitysave, ForceMode.Impulse);
+
+
         SlowDownCar();
         Debug.Log(_rigidebody.velocity);
     }
@@ -73,20 +81,34 @@ public class Car_input : MonoBehaviour
     //apply the instante force
     public void addInstantForce()
     {
-        _rigidebody.AddForce(transform.forward * puissance, ForceMode.Impulse);
+        _rigidebody.AddForce(transform.forward * puissance, ForceMode.VelocityChange);
         puissance = 0;
     }
 
     //slow down the car
     public void SlowDownCar()
     {
-        if (_rigidebody.velocity.x > 0)
-            _rigidebody.velocity -= new Vector3(0.05f, 0, 0);
-        else if (_rigidebody.velocity.x < 0)
-            _rigidebody.velocity += new Vector3(0.05f, 0, 0);
-        if (_rigidebody.velocity.z > 0)
-            _rigidebody.velocity -= new Vector3(0, 0, 0.05f);
-        else if (_rigidebody.velocity.z < 0)
-            _rigidebody.velocity += new Vector3(0, 0, 0.05f);
+        if (_rigidebody.velocity.x > 1f)
+            _rigidebody.velocity -= new Vector3(_SlowDownCar, 0, 0);
+        else if (_rigidebody.velocity.x < -1f)
+            _rigidebody.velocity += new Vector3(_SlowDownCar, 0, 0);
+        if (_rigidebody.velocity.z > 1f)
+            _rigidebody.velocity -= new Vector3(0, 0, _SlowDownCar);
+        else if (_rigidebody.velocity.z < -1f)
+            _rigidebody.velocity += new Vector3(0, 0, _SlowDownCar);
+        if (((_rigidebody.velocity.x < 1f && _rigidebody.velocity.x > -1f) && (_rigidebody.velocity.z < 1f && _rigidebody.velocity.z > -1f)) && playturn)
+        {
+            _rigidebody.velocity = Vector3.zero;
+            Debug.Log("jaja");
+        }
+
+        Debug.Log("zbeuuuul");
+    }
+
+    IEnumerator timePlayturn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        playturn = true;
+
     }
 }

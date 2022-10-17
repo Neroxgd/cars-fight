@@ -139,7 +139,7 @@ MonoBehaviour:
     m_Flags: 0
   _FR: {fileID: 3641135656024615201}
   _FL: {fileID: 2513915385720051630}
-  maxTurnAngle: 70
+  maxTurnAngle: 50
   currentTurnAngle: 0
   currentAngle: 0.5
 --- !u!54 &4646507650770407008
