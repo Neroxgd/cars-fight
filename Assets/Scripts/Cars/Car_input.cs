@@ -15,7 +15,7 @@ public class Car_input : MonoBehaviour
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0;
-    [SerializeField] private int puissance = 0;
+    [SerializeField] private float puissance = 0;
     private bool inHold = false;
     private bool playturn = false;
     [SerializeField] private float currentAngle = 0.5f;
@@ -63,26 +63,22 @@ public class Car_input : MonoBehaviour
             puissance -= speedCar;
             inHold = true;
         }
-        else if (inHold && !playturn)
+        else if (inHold)
         {
-            addInstantForce();
             inHold = false;
             StartCoroutine(timePlayturn());
         }
-        // Vector3 velocitysave = _rigidebody.velocity;
-        // _rigidebody.velocity = Vector3.zero;
-        // _rigidebody.AddForce(velocitysave, ForceMode.Impulse);
 
-
+        //help to turn and add instant force
+        if (!inHold && puissance > 0)
+        {
+            puissance -= _SlowDownCar;
+            _rigidebody.velocity = Vector3.zero;
+            _rigidebody.velocity = transform.forward * puissance;
+            Debug.Log("jaja");
+        }
+            
         SlowDownCar();
-        Debug.Log(_rigidebody.velocity);
-    }
-
-    //apply the instante force
-    public void addInstantForce()
-    {
-        _rigidebody.AddForce(transform.forward * puissance, ForceMode.VelocityChange);
-        puissance = 0;
     }
 
     //slow down the car
@@ -99,16 +95,17 @@ public class Car_input : MonoBehaviour
         if (((_rigidebody.velocity.x < 1f && _rigidebody.velocity.x > -1f) && (_rigidebody.velocity.z < 1f && _rigidebody.velocity.z > -1f)) && playturn)
         {
             _rigidebody.velocity = Vector3.zero;
-            Debug.Log("jaja");
         }
-
-        Debug.Log("zbeuuuul");
     }
 
     IEnumerator timePlayturn()
     {
         yield return new WaitForSeconds(0.5f);
         playturn = true;
+    }
 
+    public void puissance0()
+    {
+        puissance = 0;
     }
 }
