@@ -15,10 +15,10 @@ public class Car_input : MonoBehaviour
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0;
-    [SerializeField] private float puissance = 0;
+    private float puissance = 0;
     private bool inHold = false;
     private bool playturn = false;
-    [SerializeField] private float currentAngle = 0.5f;
+    private float currentAngle = 0.5f;
     [SerializeField] private float _SlowDownCar = 0.1f;
     void Start()
     {
@@ -38,13 +38,13 @@ public class Car_input : MonoBehaviour
         //turn the wheels
         currentTurnAngle = Mathf.Lerp(maxTurnAngle, -maxTurnAngle, currentAngle);
         if (Keyboard.current.aKey.isPressed || Keyboard.current.dKey.isPressed)
-            currentAngle = Mathf.Clamp(currentAngle, 0, 1) + (-_rotation / 50);
+            currentAngle = Mathf.Clamp(currentAngle, 0, 1) + (-_rotation / 10);
         else
         {
             if (currentAngle >= 0.6f)
-                currentAngle -= 0.04f;
+                currentAngle -= 0.08f;
             else if (currentAngle <= 0.4f)
-                currentAngle += 0.04f;
+                currentAngle += 0.08f;
             else
                 currentAngle = 0.5f;
         }
