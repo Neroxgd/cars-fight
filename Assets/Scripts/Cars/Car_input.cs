@@ -73,9 +73,7 @@ public class Car_input : MonoBehaviour
         if (!inHold && puissance > 0)
         {
             puissance -= _SlowDownCar;
-            _rigidebody.velocity = Vector3.zero;
             _rigidebody.velocity = transform.forward * puissance;
-            Debug.Log("jaja");
         }
             
         SlowDownCar();
@@ -84,15 +82,15 @@ public class Car_input : MonoBehaviour
     //slow down the car
     public void SlowDownCar()
     {
-        if (_rigidebody.velocity.x > 1f)
+        if (_rigidebody.velocity.x > 0.1f)
             _rigidebody.velocity -= new Vector3(_SlowDownCar, 0, 0);
-        else if (_rigidebody.velocity.x < -1f)
+        else if (_rigidebody.velocity.x < -0.1f)
             _rigidebody.velocity += new Vector3(_SlowDownCar, 0, 0);
-        if (_rigidebody.velocity.z > 1f)
+        if (_rigidebody.velocity.z > 0.1f)
             _rigidebody.velocity -= new Vector3(0, 0, _SlowDownCar);
-        else if (_rigidebody.velocity.z < -1f)
+        else if (_rigidebody.velocity.z < -0.1f)
             _rigidebody.velocity += new Vector3(0, 0, _SlowDownCar);
-        if (((_rigidebody.velocity.x < 1f && _rigidebody.velocity.x > -1f) && (_rigidebody.velocity.z < 1f && _rigidebody.velocity.z > -1f)) && playturn)
+        if (((_rigidebody.velocity.x < 0.1f && _rigidebody.velocity.x > -0.1f) && (_rigidebody.velocity.z < 0.1f && _rigidebody.velocity.z > -0.1f)) && playturn)
         {
             _rigidebody.velocity = Vector3.zero;
         }

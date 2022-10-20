@@ -8,6 +8,11 @@ public class Camera : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.position = _carPosition.position + new Vector3(3, 2, 0);
+        transform.position = _carPosition.position;
+    }
+
+    void FixedUpdate()
+    {
+        transform.rotation = new Quaternion(transform.rotation.x, _carPosition.rotation.y, transform.rotation.z, transform.rotation.w);
     }
 }
