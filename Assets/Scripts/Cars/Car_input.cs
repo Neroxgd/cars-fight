@@ -18,13 +18,12 @@ public class Car_input : MonoBehaviour
     private float puissance = 0;
     private bool inHold = false;
     private bool playturn = false;
+    private bool endturn = true;
     private float currentAngle = 0.5f;
     [SerializeField] private float _SlowDownCar = 0.1f;
     void Start()
     {
         _rigidebody = GetComponent<Rigidbody>();
-        //debug the collision when you spawn
-        _rigidebody.AddForce(transform.forward * 5000, ForceMode.Impulse);
     }
 
     void Update()
@@ -75,7 +74,7 @@ public class Car_input : MonoBehaviour
             puissance -= _SlowDownCar;
             _rigidebody.velocity = transform.forward * puissance;
         }
-            
+
         SlowDownCar();
     }
 
@@ -90,9 +89,10 @@ public class Car_input : MonoBehaviour
             _rigidebody.velocity -= new Vector3(0, 0, _SlowDownCar);
         else if (_rigidebody.velocity.z < -0.1f)
             _rigidebody.velocity += new Vector3(0, 0, _SlowDownCar);
-        if (((_rigidebody.velocity.x < 0.1f && _rigidebody.velocity.x > -0.1f) && (_rigidebody.velocity.z < 0.1f && _rigidebody.velocity.z > -0.1f)) && playturn)
+        if (((_rigidebody.velocity.x < 0.1f && _rigidebody.velocity.x > -0.1f) && (_rigidebody.velocity.z < 0.1f && _rigidebody.velocity.z > -0.1f)) && playturn && endturn)
         {
             _rigidebody.velocity = Vector3.zero;
+            endturn = false;
         }
     }
 
