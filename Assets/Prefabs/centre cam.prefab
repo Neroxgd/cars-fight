@@ -45,5 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _carPosition: {fileID: 0}
-  CamPosition: {fileID: 0}
-  Cam_rb: {fileID: 0}
+  CamPosition: {fileID: 975362799473047120, guid: 1989289c5dfbd45489fd52bc648010ff,
+    type: 3}
+  Cam_rb: {fileID: 975362799473047121, guid: 1989289c5dfbd45489fd52bc648010ff, type: 3}
+  hauteurMaxCam: 2
