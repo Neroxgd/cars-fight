@@ -15,7 +15,7 @@ public class Camera : MonoBehaviour
     {
         transform.position = _carPosition.position;
         if (Vector3.Distance(CamPosition.position, transform.position) > 3)
-            Cam_rb.velocity = Cam_rb.transform.forward * Vector3.Distance(CamPosition.position, transform.position) * Time.deltaTime * 150;
+            Cam_rb.velocity = Cam_rb.transform.forward * Vector3.Distance(CamPosition.position, transform.position) * Time.deltaTime * 250;
         else 
             Cam_rb.velocity = Vector3.zero;
         CamPosition.position = new Vector3(CamPosition.position.x, Mathf.Clamp(CamPosition.position.y, hauteurMaxCam, int.MaxValue), CamPosition.position.z);
