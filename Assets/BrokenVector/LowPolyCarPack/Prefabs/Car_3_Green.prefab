@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 129146}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2707592281546590388}
@@ -139,7 +139,7 @@ MonoBehaviour:
     m_Flags: 0
   _FR: {fileID: 3641135656024615201}
   _FL: {fileID: 2513915385720051630}
-  maxTurnAngle: 50
+  maxTurnAngle: 35
   currentTurnAngle: 0
   _SlowDownCar: 0.1
 --- !u!54 &4646507650770407008
@@ -169,8 +169,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.021373872, y: 0.013582619, z: 0.045498952}
-  m_Center: {x: -0.00048554828, y: 0.00096554705, z: 0.00038248114}
+  m_Size: {x: 0.021373885, y: 0.012243784, z: 0.045498952}
+  m_Center: {x: -0.0004855484, y: 0.0016349711, z: 0.00038248103}
 --- !u!1 &145462
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,8 +711,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.4885235, y: 1.3587775, z: 4.903262}
-  m_Center: {x: -0.32454443, y: 0.49720815, z: -0.89115286}
+  m_Size: {x: 2.6904128, y: 1.3587775, z: 5.128064}
+  m_Center: {x: -0.33153147, y: 0.4972082, z: -0.7787562}
 --- !u!114 &4607258421216616896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,6 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rbParent: {fileID: 4646507650770407008}
+  _Car: {fileID: 0}
   _colliderParent: {fileID: 8689828949269971322}
   _Car_input: {fileID: 3069878421870904984}
 --- !u!54 &2097573549855460206
@@ -743,7 +744,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!1 &6307966302893969475
 GameObject:
   m_ObjectHideFlags: 0

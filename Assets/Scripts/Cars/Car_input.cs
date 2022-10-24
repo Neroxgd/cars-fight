@@ -15,7 +15,9 @@ public class Car_input : MonoBehaviour
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0;
-    private float puissance = 0;
+    [SerializeField] private float puissance = 0;
+    private float savepuissance;
+    public float returnpuissance() {return savepuissance;}
     private bool inHold = false;
     private bool playturn = false;
     private bool endturn = true;
@@ -34,6 +36,7 @@ public class Car_input : MonoBehaviour
 
     void FixedUpdate()
     {
+        savepuissance = puissance;
         //turn the wheels
         currentTurnAngle = Mathf.Lerp(maxTurnAngle, -maxTurnAngle, currentAngle);
         if (Keyboard.current.aKey.isPressed || Keyboard.current.dKey.isPressed)
@@ -92,6 +95,7 @@ public class Car_input : MonoBehaviour
         if (((_rigidebody.velocity.x < 0.1f && _rigidebody.velocity.x > -0.1f) && (_rigidebody.velocity.z < 0.1f && _rigidebody.velocity.z > -0.1f)) && playturn && endturn)
         {
             _rigidebody.velocity = Vector3.zero;
+            Debug.Log("geeeee");
             endturn = false;
         }
     }
