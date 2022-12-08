@@ -17,12 +17,13 @@ public class Car_input : MonoBehaviour
     private float _rotation = 0;
     [SerializeField] private float puissance = 0;
     private float savepuissance;
-    public float returnpuissance() {return savepuissance;}
+    public float returnpuissance() { return savepuissance; }
     private bool inHold = false;
     private bool playturn = false;
     private bool endturn = true;
     private float currentAngle = 0.5f;
     [SerializeField] private float _SlowDownCar = 0.1f;
+    private float lerpSlowDownCar = 1;
     void Start()
     {
         _rigidebody = GetComponent<Rigidbody>();
@@ -44,9 +45,9 @@ public class Car_input : MonoBehaviour
         else
         {
             if (currentAngle >= 0.6f)
-                currentAngle -= 0.08f;
+                currentAngle -= 0.08f * Time.fixedDeltaTime * 5;
             else if (currentAngle <= 0.4f)
-                currentAngle += 0.08f;
+                currentAngle += 0.08f * Time.fixedDeltaTime * 5;
             else
                 currentAngle = 0.5f;
         }
@@ -57,12 +58,12 @@ public class Car_input : MonoBehaviour
         //increase the power
         if (Keyboard.current.wKey.isPressed && !playturn)
         {
-            puissance += speedCar;
+            puissance += speedCar * Time.fixedDeltaTime;
             inHold = true;
         }
         else if (Keyboard.current.sKey.isPressed && !playturn)
         {
-            puissance -= speedCar;
+            puissance -= speedCar * Time.fixedDeltaTime;
             inHold = true;
         }
         else if (inHold)
@@ -74,7 +75,7 @@ public class Car_input : MonoBehaviour
         //help to turn and add instant force
         if (!inHold && puissance > 0)
         {
-            puissance -= _SlowDownCar;
+            puissance -= _SlowDownCar * Time.fixedDeltaTime;
             _rigidebody.velocity = transform.forward * puissance;
         }
 
@@ -84,14 +85,10 @@ public class Car_input : MonoBehaviour
     //slow down the car
     public void SlowDownCar()
     {
-        if (_rigidebody.velocity.x > 0.1f)
-            _rigidebody.velocity -= new Vector3(_SlowDownCar, 0, 0);
-        else if (_rigidebody.velocity.x < -0.1f)
-            _rigidebody.velocity += new Vector3(_SlowDownCar, 0, 0);
-        if (_rigidebody.velocity.z > 0.1f)
-            _rigidebody.velocity -= new Vector3(0, 0, _SlowDownCar);
-        else if (_rigidebody.velocity.z < -0.1f)
-            _rigidebody.velocity += new Vector3(0, 0, _SlowDownCar);
+        _rigidebody.velocity = Vector3.Lerp(Vector3.zero, _rigidebody.velocity, lerpSlowDownCar);
+        lerpSlowDownCar -= _SlowDownCar * _rigidebody.velocity.magnitude * Time.fixedDeltaTime;
+        lerpSlowDownCar = Mathf.Clamp(lerpSlowDownCar, 0, 1);
+
         if (((_rigidebody.velocity.x < 0.1f && _rigidebody.velocity.x > -0.1f) && (_rigidebody.velocity.z < 0.1f && _rigidebody.velocity.z > -0.1f)) && playturn && endturn)
         {
             _rigidebody.velocity = Vector3.zero;
