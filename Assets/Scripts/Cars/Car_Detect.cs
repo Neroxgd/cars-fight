@@ -15,10 +15,10 @@ public class Car_Detect : MonoBehaviour
         _rbParent.constraints = RigidbodyConstraints.None;
         _Car_input.puissance0();
 
+        //pass on the trottoire
         if (other.gameObject.CompareTag ("trottoire") && _Car.transform.position.y < 0.29f && _Car_input.returnpuissance() > 1)
         {
-            _Car.transform.Translate(new Vector3(0,1f,0));
-            // _rbParent.AddForce(_Car.transform.forward * _Car_input.returnpuissance());
+            _rbParent.velocity += Vector3.up*2;
         }
             
     }
