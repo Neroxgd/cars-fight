@@ -18,6 +18,7 @@ public class Car_input : MonoBehaviour
     [SerializeField] private float puissance = 0;
     private float savepuissance;
     public float returnpuissance() { return savepuissance; }
+    public float returnSpeed() {return _rigidebody.velocity.magnitude;}
     private bool inHold = false;
     private bool playturn = false;
     private bool endturn = true;
@@ -89,7 +90,7 @@ public class Car_input : MonoBehaviour
         lerpSlowDownCar -= _SlowDownCar * _rigidebody.velocity.magnitude * Time.fixedDeltaTime;
         lerpSlowDownCar = Mathf.Clamp(lerpSlowDownCar, 0, 1);
 
-        if (((_rigidebody.velocity.x < 0.1f && _rigidebody.velocity.x > -0.1f) && (_rigidebody.velocity.z < 0.1f && _rigidebody.velocity.z > -0.1f)) && playturn && endturn)
+        if ((_rigidebody.velocity.magnitude < .1) && playturn && endturn)
         {
             _rigidebody.velocity = Vector3.zero;
             Debug.Log("geeeee");

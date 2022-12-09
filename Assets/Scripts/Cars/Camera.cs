@@ -6,11 +6,13 @@ public class Camera : MonoBehaviour
 {
     [SerializeField] private Transform _PlayerPosition;
     [SerializeField] private Transform CamPosition;
+    [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private Rigidbody Cam_rb;
     private Vector3 vit_rot = Vector3.zero;
     [SerializeField] private float hauteurMaxCam = 10;
     [SerializeField] private float distanceCam;
     [SerializeField] private float speedCam;
+    [SerializeField] private Car_input _car_Input;
     private float smoothCam = 1;
 
     //cam follow the car
@@ -20,7 +22,7 @@ public class Camera : MonoBehaviour
         if (Vector3.Distance(CamPosition.position, transform.position) > distanceCam)
         {
             smoothCam = 1;
-            Cam_rb.velocity = Cam_rb.transform.forward * Vector3.Distance(CamPosition.position, transform.position) * Time.deltaTime * speedCam;
+            Cam_rb.velocity = Cam_rb.transform.forward * Mathf.Pow(Vector3.Distance(CamPosition.position, transform.position), 2) * Time.deltaTime * speedCam;
         }
         else
         {
@@ -30,5 +32,19 @@ public class Camera : MonoBehaviour
         smoothCam = Mathf.Clamp(smoothCam, 0, 1);
         CamPosition.position = new Vector3(CamPosition.position.x, Mathf.Clamp(CamPosition.position.y, hauteurMaxCam, int.MaxValue), CamPosition.position.z);
         CamPosition.LookAt(transform.position);
+
+        if (_car_Input.returnSpeed()>.1 && Vector3.Distance(CamPosition.position, _PlayerPosition.position)>6)
+        {
+            boxCollider.enabled = !boxCollider.enabled;
+            StartCoroutine(ReplaceCam());
+        }
+            
+
+    }
+
+    IEnumerator ReplaceCam()
+    {
+        yield return new WaitForSeconds(3);
+        boxCollider.enabled = !boxCollider.enabled;
     }
 }
