@@ -33,12 +33,12 @@ public class Camera : MonoBehaviour
         CamPosition.position = new Vector3(CamPosition.position.x, Mathf.Clamp(CamPosition.position.y, hauteurMaxCam, int.MaxValue), CamPosition.position.z);
         CamPosition.LookAt(transform.position);
 
-        if (_car_Input.returnSpeed()>.1 && Vector3.Distance(CamPosition.position, _PlayerPosition.position)>6)
+        if (_car_Input.returnSpeed() > .1 && Vector3.Distance(CamPosition.position, _PlayerPosition.position) > 6 && boxCollider.enabled)
         {
             boxCollider.enabled = !boxCollider.enabled;
             StartCoroutine(ReplaceCam());
         }
-            
+
 
     }
 
