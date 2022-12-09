@@ -41,28 +41,9 @@ public class Camera : MonoBehaviour
 
 
     }
-
-    bool dead;
-    void MakingGames()
-    {
-
-    }
     IEnumerator ReplaceCam()
     {
         yield return new WaitForSeconds(3);
         boxCollider.enabled = !boxCollider.enabled;
-
-
-        while (!dead)
-        {
-            MakingGames();
-        }
-
     }
-
-
-
-    
-
-
 }
