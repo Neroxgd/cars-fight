@@ -20,7 +20,6 @@ public class Car_Detect : MonoBehaviour
         {
             _rbParent.velocity += Vector3.up*2;
         }
-        print("beeee");
     }
     void Awake()
     {
