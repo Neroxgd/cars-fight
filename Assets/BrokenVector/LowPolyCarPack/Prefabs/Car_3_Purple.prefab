@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 455904}
   - component: {fileID: 3336518}
   - component: {fileID: 2375328}
+  - component: {fileID: 6960388232825705267}
   m_Layer: 0
   m_Name: Car_3_Purple
   m_TagString: Untagged
@@ -89,6 +90,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6960388232825705267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ecd614573eeb3419be187c67cab72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeStart: 3
+  intersection:
+  - {fileID: 0}
+  - {fileID: 0}
+  speed: 1
 --- !u!1 &145462
 GameObject:
   m_ObjectHideFlags: 0
