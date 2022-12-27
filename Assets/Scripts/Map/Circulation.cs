@@ -60,9 +60,7 @@ public class Circulation : MonoBehaviour
         Gizmos.color = Color.red;
 
         foreach (var point in intersection)
-        {
             Gizmos.DrawSphere(point.position, 0.2f);
-        }
 
         Gizmos.color = Color.white;
         if (DrawingSpline != null)
