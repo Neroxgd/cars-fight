@@ -5,7 +5,7 @@ using UnityEngine;
 public class Circulation : MonoBehaviour
 {
     [SerializeField] private int timeStart;
-    public Transform[] intersection;
+    [SerializeField] private Transform[] intersection;
     private bool SmoothIntersection = false;
     private float InterpolateAmount;
     [SerializeField] private float speed;

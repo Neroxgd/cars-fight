@@ -19,8 +19,8 @@ public class AfficheSpline : Editor
             ifDrawSpline = true;
         }
 
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("intersection"), true);
-        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        base.OnInspectorGUI();
     }
 }
