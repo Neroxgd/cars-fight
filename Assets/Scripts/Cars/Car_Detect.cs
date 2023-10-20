@@ -13,13 +13,12 @@ public class Car_Detect : MonoBehaviour
     {
         //disabled freeze rotation on parent and help for the sidewalks
         _rbParent.constraints = RigidbodyConstraints.None;
-        _Car_input.puissance0();
 
         //pass on the trottoire
-        if (other.gameObject.CompareTag ("trottoire") && _Car.transform.position.y < 0.29f && _Car_input.returnpuissance() > 1)
-        {
-            _rbParent.velocity += Vector3.up*2;
-        }
+        // if (other.gameObject.CompareTag ("trottoire") && _Car.transform.position.y < 0.29f && _Car_input.Returnpuissance > 1)
+        // {
+        //     _rbParent.velocity += Vector3.up*2;
+        // }
     }
     void Awake()
     {

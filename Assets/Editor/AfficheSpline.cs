@@ -1,24 +1,16 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Circulation))]
+[CustomEditor(typeof(Spline))]
 public class AfficheSpline : Editor
 {
-    private bool ifDrawSpline = true;
-
     public override void OnInspectorGUI()
     {
-        Circulation circulation = (Circulation)target;
+        Spline spline = (Spline)target;
 
         if (GUILayout.Button("Draw Spline"))
-            ifDrawSpline = false;
-
-        if (!ifDrawSpline)
-        {
-            circulation.DrawSpine();
-            ifDrawSpline = true;
-        }
-
+            spline.DrawSpine();
+            
         EditorGUILayout.Space();
         EditorGUILayout.Space();
         base.OnInspectorGUI();

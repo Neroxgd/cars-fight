@@ -5,40 +5,77 @@ using UnityEngine.InputSystem;
 
 public class Car_input : MonoBehaviour
 {
-    private Rigidbody _rigidebody;
-    [SerializeField][Range(1, 100)] private int speedCar = 1000;
+    private Rigidbody rbCar;
     [SerializeField] private InputAction _inputedirection;
-    [SerializeField] private WheelCollider _FR;
-    [SerializeField] private WheelCollider _FL;
-    [SerializeField] private float maxTurnAngle = 70f;
-    [SerializeField] private float currentTurnAngle = 0;
+    [SerializeField] private WheelCollider _FR, _FL;
+    [SerializeField] private float maxTurnAngle = 70f, currentTurnAngle = 0, carPower, speedTurnRespawn;
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
-    private float _rotation = 0;
-    [SerializeField] private float puissance = 0;
-    private float savepuissance;
-    public float returnpuissance() { return savepuissance; }
-    public float returnSpeed() {return _rigidebody.velocity.magnitude;}
-    private bool inHold = false;
-    private bool playturn = false;
-    private bool endturn = true;
-    private float currentAngle = 0.5f;
-    [SerializeField] private float _SlowDownCar = 0.1f;
-    private float lerpSlowDownCar = 1;
+    private float _rotation = 0, carCurrentPower, currentAngle = 0.5f, carForwardAxe, carTurnAxe;
+    public float ReturnSpeed { get { return rbCar.velocity.magnitude; } }
+    private bool increasePower, isReswpawningSamePos;
+
     void Start()
     {
-        _rigidebody = GetComponent<Rigidbody>();
+        rbCar = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
+        if (isReswpawningSamePos)
+        {
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + carTurnAxe * Time.deltaTime * speedTurnRespawn, transform.eulerAngles.z);
+            return;
+        }
         //get the horizontal axe input values
         _rotation = _inputedirection.ReadValue<Vector2>().x;
+        if (increasePower)
+            carCurrentPower += 1 * Time.deltaTime * carPower * carForwardAxe;
+        if (rbCar.velocity.magnitude < 0.1f)
+            rbCar.velocity = Vector3.zero;
+    }
+
+    public void IncreasePower(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            increasePower = true;
+            carForwardAxe = context.ReadValue<float>();
+        }
+        else if (context.canceled)
+        {
+            increasePower = false;
+            rbCar.velocity = transform.forward * carCurrentPower;
+            carCurrentPower = 0;
+        }
+    }
+
+    public void TurnCar(InputAction.CallbackContext context)
+    {
+        carTurnAxe = context.ReadValue<float>();
+    }
+
+    public void RespawnSamePos(InputAction.CallbackContext context)
+    {
+        print(rbCar.velocity.magnitude);
+        if (rbCar.velocity.magnitude > 0.1f) return;
+        if (context.started)
+        {
+            transform.eulerAngles = Vector3.up * transform.eulerAngles.y;
+            transform.Translate(Vector3.up * 0.5f);
+            rbCar.isKinematic = true;
+            isReswpawningSamePos = true;
+        }
+        if (context.canceled)
+        {
+            isReswpawningSamePos = false;
+            rbCar.isKinematic = false;
+        }
+
     }
 
     void FixedUpdate()
     {
-        savepuissance = puissance;
         //turn the wheels
         currentTurnAngle = Mathf.Lerp(maxTurnAngle, -maxTurnAngle, currentAngle);
         if (Keyboard.current.aKey.isPressed || Keyboard.current.dKey.isPressed)
@@ -56,56 +93,6 @@ public class Car_input : MonoBehaviour
         _FL.steerAngle = currentTurnAngle;
         _FR.steerAngle = currentTurnAngle;
 
-        //increase the power
-        if (Keyboard.current.wKey.isPressed && !playturn)
-        {
-            puissance += speedCar * Time.fixedDeltaTime;
-            inHold = true;
-        }
-        else if (Keyboard.current.sKey.isPressed && !playturn)
-        {
-            puissance -= speedCar * Time.fixedDeltaTime;
-            inHold = true;
-        }
-        else if (inHold)
-        {
-            inHold = false;
-            StartCoroutine(timePlayturn());
-        }
-
-        //help to turn and add instant force
-        if (!inHold && puissance > 0)
-        {
-            puissance -= _SlowDownCar * Time.fixedDeltaTime;
-            _rigidebody.velocity = transform.forward * puissance;
-        }
-
-        SlowDownCar();
-    }
-
-    //slow down the car
-    public void SlowDownCar()
-    {
-        _rigidebody.velocity = Vector3.Lerp(Vector3.zero, _rigidebody.velocity, lerpSlowDownCar);
-        lerpSlowDownCar -= _SlowDownCar * _rigidebody.velocity.magnitude * Time.fixedDeltaTime;
-        lerpSlowDownCar = Mathf.Clamp(lerpSlowDownCar, 0, 1);
-
-        if ((_rigidebody.velocity.magnitude < .1) && playturn && endturn)
-        {
-            _rigidebody.velocity = Vector3.zero;
-            Debug.Log("geeeee");
-            endturn = false;
-        }
-    }
-
-    IEnumerator timePlayturn()
-    {
-        yield return new WaitForSeconds(0.5f);
-        playturn = true;
-    }
-
-    public void puissance0()
-    {
-        puissance = 0;
+        transform.eulerAngles = Vector3.Lerp(_FL.transform.eulerAngles, _FR.transform.eulerAngles, Mathf.Pow(rbCar.velocity.magnitude, 1f / 3f) / 10f);
     }
 }
