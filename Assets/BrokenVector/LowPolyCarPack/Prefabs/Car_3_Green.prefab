@@ -139,10 +139,11 @@ MonoBehaviour:
     m_Flags: 0
   _FR: {fileID: 3641135656024615201}
   _FL: {fileID: 2513915385720051630}
-  maxTurnAngle: 35
+  maxTurnAngle: 45
   currentTurnAngle: 0
   carPower: 1
-  speedTurnRespawn: 50
+  speedTurnRespawn: 100
+  speedTurn: 10
 --- !u!54 &4646507650770407008
 Rigidbody:
   m_ObjectHideFlags: 0

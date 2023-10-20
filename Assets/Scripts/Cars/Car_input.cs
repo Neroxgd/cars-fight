@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,12 +9,12 @@ public class Car_input : MonoBehaviour
     private Rigidbody rbCar;
     [SerializeField] private InputAction _inputedirection;
     [SerializeField] private WheelCollider _FR, _FL;
-    [SerializeField] private float maxTurnAngle = 70f, currentTurnAngle = 0, carPower, speedTurnRespawn;
+    [SerializeField] private float maxTurnAngle = 70f, currentTurnAngle = 0, carPower, speedTurnRespawn, speedTurn;
     private void OnEnable() { _inputedirection.Enable(); }
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0, carCurrentPower, currentAngle = 0.5f, carForwardAxe, carTurnAxe;
     public float ReturnSpeed { get { return rbCar.velocity.magnitude; } }
-    private bool increasePower, isReswpawningSamePos;
+    private bool increasePower, isReswpawningSamePos, isPlaying;
 
     void Start()
     {
@@ -32,7 +33,10 @@ public class Car_input : MonoBehaviour
         if (increasePower)
             carCurrentPower += 1 * Time.deltaTime * carPower * carForwardAxe;
         if (rbCar.velocity.magnitude < 0.1f)
+        {
             rbCar.velocity = Vector3.zero;
+            isPlaying = false;
+        }
     }
 
     public void IncreasePower(InputAction.CallbackContext context)
@@ -45,6 +49,7 @@ public class Car_input : MonoBehaviour
         else if (context.canceled)
         {
             increasePower = false;
+            isPlaying = true;
             rbCar.velocity = transform.forward * carCurrentPower;
             carCurrentPower = 0;
         }
@@ -57,8 +62,7 @@ public class Car_input : MonoBehaviour
 
     public void RespawnSamePos(InputAction.CallbackContext context)
     {
-        print(rbCar.velocity.magnitude);
-        if (rbCar.velocity.magnitude > 0.1f) return;
+        if (isPlaying) return;
         if (context.started)
         {
             transform.eulerAngles = Vector3.up * transform.eulerAngles.y;
@@ -93,6 +97,8 @@ public class Car_input : MonoBehaviour
         _FL.steerAngle = currentTurnAngle;
         _FR.steerAngle = currentTurnAngle;
 
-        transform.eulerAngles = Vector3.Lerp(_FL.transform.eulerAngles, _FR.transform.eulerAngles, Mathf.Pow(rbCar.velocity.magnitude, 1f / 3f) / 10f);
+        if (isPlaying)
+            rbCar.velocity = new Vector3(transform.forward.x* rbCar.velocity.magnitude * carForwardAxe, rbCar.velocity.y, transform.forward.z* rbCar.velocity.magnitude * carForwardAxe);
+        transform.rotation = Quaternion.Lerp(_FL.transform.rotation, _FR.transform.rotation, Mathf.Pow(rbCar.velocity.magnitude, 1f / 2f) / 10f);
     }
 }
