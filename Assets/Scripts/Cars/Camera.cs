@@ -1,49 +1,50 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
+using DG.Tweening;
 
 public class Camera : MonoBehaviour
 {
     [SerializeField] private Transform _PlayerPosition;
     [SerializeField] private Transform CamPosition;
     [SerializeField] private BoxCollider boxCollider;
-    [SerializeField] private Rigidbody Cam_rb;
-    private Vector3 vit_rot = Vector3.zero;
+    [SerializeField] private Rigidbody rbCam;
     [SerializeField] private float hauteurMaxCam = 10;
     [SerializeField] private float distanceCam;
     [SerializeField] private float speedCam;
     [SerializeField] private Car_input _car_Input;
-    private float smoothCam = 1;
+    private bool IsCarStopped { get { return _car_Input.ReturnSpeed < .1; } }
 
     //cam follow the car
     void LateUpdate()
     {
-        transform.position = _PlayerPosition.position;
-        if (Vector3.Distance(CamPosition.position, transform.position) > distanceCam)
+        if (!DOTween.IsTweening(rbCam))
         {
-            smoothCam = 1;
-            Cam_rb.velocity = Cam_rb.transform.forward * Mathf.Pow(Vector3.Distance(CamPosition.position, transform.position), 2) * Time.deltaTime * speedCam;
+            transform.position = _PlayerPosition.position;
+            if (Vector3.Distance(CamPosition.position, transform.position) > distanceCam)
+                rbCam.velocity = rbCam.transform.forward * Mathf.Pow(Vector3.Distance(CamPosition.position, transform.position), 2) * Time.deltaTime * speedCam;
+
+            else
+                rbCam.velocity = Vector3.Lerp(rbCam.velocity, Vector3.zero, Time.deltaTime);
+            CamPosition.position = new Vector3(CamPosition.position.x, Mathf.Clamp(CamPosition.position.y, hauteurMaxCam, int.MaxValue), CamPosition.position.z);
         }
-        else
-        {
-            smoothCam -= 0.1f * Time.deltaTime;
-            Cam_rb.velocity = Vector3.Lerp(Vector3.zero, Cam_rb.velocity, smoothCam);
-        }
-        smoothCam = Mathf.Clamp(smoothCam, 0, 1);
-        CamPosition.position = new Vector3(CamPosition.position.x, Mathf.Clamp(CamPosition.position.y, hauteurMaxCam, int.MaxValue), CamPosition.position.z);
         CamPosition.LookAt(transform.position);
 
-        if (_car_Input.ReturnSpeed > .1 && Vector3.Distance(CamPosition.position, _PlayerPosition.position) > 6 && boxCollider.enabled)
+        if (IsCarStopped && Vector3.Distance(CamPosition.position, _PlayerPosition.position) > 6 && boxCollider.enabled)
         {
             boxCollider.enabled = !boxCollider.enabled;
             StartCoroutine(ReplaceCam());
         }
-
-
     }
     IEnumerator ReplaceCam()
     {
         yield return new WaitForSeconds(3);
         boxCollider.enabled = !boxCollider.enabled;
+    }
+
+    public void CameraLookForward(InputAction.CallbackContext context)
+    {
+        if (!context.started && !IsCarStopped) return;
+        rbCam.DOMove(new Vector3(_PlayerPosition.position.x - _PlayerPosition.forward.x * 6f, _PlayerPosition.position.y + hauteurMaxCam, _PlayerPosition.position.z - _PlayerPosition.forward.z * 6f), 0.5f);
     }
 }
