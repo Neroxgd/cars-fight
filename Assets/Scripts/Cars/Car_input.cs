@@ -14,7 +14,7 @@ public class Car_input : MonoBehaviour
     private void OnDisable() { _inputedirection.Disable(); }
     private float _rotation = 0, carCurrentPower, currentAngle = 0.5f, carForwardAxe, carTurnAxe;
     public float ReturnSpeed { get { return rbCar.velocity.magnitude; } }
-    private bool increasePower, isReswpawningSamePos, isPlaying;
+    private bool increasePower, isReswpawningSamePos, isPlaying, canRespawn;
 
     void Start()
     {
@@ -41,6 +41,7 @@ public class Car_input : MonoBehaviour
 
     public void IncreasePower(InputAction.CallbackContext context)
     {
+        if (isPlaying) return;
         if (context.started)
         {
             increasePower = true;
@@ -50,6 +51,7 @@ public class Car_input : MonoBehaviour
         {
             increasePower = false;
             isPlaying = true;
+            canRespawn = true;
             rbCar.velocity = transform.forward * carCurrentPower;
             carCurrentPower = 0;
         }
@@ -63,14 +65,15 @@ public class Car_input : MonoBehaviour
     public void RespawnSamePos(InputAction.CallbackContext context)
     {
         if (isPlaying) return;
-        if (context.started)
+        if (context.started && canRespawn)
         {
+            canRespawn = false;
             transform.eulerAngles = Vector3.up * transform.eulerAngles.y;
             transform.Translate(Vector3.up * 0.5f);
             rbCar.isKinematic = true;
             isReswpawningSamePos = true;
         }
-        if (context.canceled)
+        else if (context.canceled)
         {
             isReswpawningSamePos = false;
             rbCar.isKinematic = false;
@@ -98,7 +101,7 @@ public class Car_input : MonoBehaviour
         _FR.steerAngle = currentTurnAngle;
 
         if (isPlaying)
-            rbCar.velocity = new Vector3(transform.forward.x* rbCar.velocity.magnitude * carForwardAxe, rbCar.velocity.y, transform.forward.z* rbCar.velocity.magnitude * carForwardAxe);
+            rbCar.velocity = new Vector3(transform.forward.x * rbCar.velocity.magnitude * carForwardAxe, rbCar.velocity.y, transform.forward.z * rbCar.velocity.magnitude * carForwardAxe);
         transform.rotation = Quaternion.Lerp(_FL.transform.rotation, _FR.transform.rotation, Mathf.Pow(rbCar.velocity.magnitude, 1f / 2f) / 10f);
     }
 }
